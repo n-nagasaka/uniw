@@ -21,9 +21,10 @@ public class Worker : BackgroundService
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        _appLifetime.ApplicationStarted.Register(() => Task.Run(Exec1, cancellationToken));
+        _appLifetime.ApplicationStarted.Register(() => Task.Run(Exec, cancellationToken));
+        _appLifetime.ApplicationStarted.Register(() => Task.Run(ExecWithoutErrorHandling, cancellationToken));
         if (_asyncVoid) {
-            _appLifetime.ApplicationStarted.Register(Exec2);
+            _appLifetime.ApplicationStarted.Register(AsyncVoidExec);
         }
         _logger.LogInformation("StartAsync");
         return Task.CompletedTask;
@@ -42,16 +43,17 @@ public class Worker : BackgroundService
     }
 
 
-    protected async Task Exec1()
+    protected async Task Exec()
     {
+        const string name = "Exec";
         try {
-
-            _logger.LogInformation("Exec1: hello");
+            await Task.Delay(1000);
+            _logger.LogInformation($"{name}: hello");
             await Task.Delay(1000);
             if (_error) {
-                throw new Exception("Exec1: error");
+                throw new Exception($"{name}: error");
             }
-            _logger.LogInformation("Exec1: bye");
+            _logger.LogInformation($"{name}: bye");
 
 
         } catch (Exception ex) {
@@ -60,21 +62,29 @@ public class Worker : BackgroundService
         }
     }
 
-    protected async void Exec2()
+    protected async Task ExecWithoutErrorHandling()
     {
-        try {
+        const string name = "ExecWithoutErrorHandling";
 
-            _logger.LogInformation("Exec2: hello");
-            await Task.Delay(1000);
-            if (_error) {
-                throw new Exception("Exec2: error");
-            }
-            _logger.LogInformation("Exec2: bye");
-
-
-        } catch (Exception ex) {
-            _logger.LogError(ex.ToString());
-            throw;
+        await Task.Delay(1300);
+        _logger.LogInformation($"{name}: hello");
+        await Task.Delay(1000);
+        if (_error) {
+            throw new Exception($"{name}: error");
         }
+        _logger.LogInformation($"{name}: bye");
+    }
+
+    protected async void AsyncVoidExec()
+    {
+        const string name = "AsyncVoidExec";
+
+        await Task.Delay(700);
+        _logger.LogInformation($"{name}: hello");
+        await Task.Delay(1000);
+        if (_error) {
+            throw new Exception($"{name}: error");
+        }
+        _logger.LogInformation($"{name}: bye");
     }
 }

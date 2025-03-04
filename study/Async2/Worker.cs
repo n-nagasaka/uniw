@@ -21,8 +21,8 @@ public class Worker : BackgroundService
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        _appLifetime.ApplicationStarted.Register(() => Task.Run(Exec, cancellationToken));
-        _appLifetime.ApplicationStarted.Register(() => Task.Run(ExecWithoutErrorHandling, cancellationToken));
+        _appLifetime.ApplicationStarted.Register(() => Task.Run(Exec));
+        _appLifetime.ApplicationStarted.Register(() => Task.Run(ExecWithoutErrorHandling));
         if (_asyncVoid) {
             _appLifetime.ApplicationStarted.Register(AsyncVoidExec);
         }
@@ -43,6 +43,9 @@ public class Worker : BackgroundService
     }
 
 
+    /// <summary>
+    /// 例外はリスローされてもプロセスは実行を続ける
+    /// </summary>
     protected async Task Exec()
     {
         const string name = "Exec";
@@ -62,6 +65,10 @@ public class Worker : BackgroundService
         }
     }
 
+    /// <summary>
+    /// 例外をキャッチせずにログ出力する
+    /// 例外が発生しても内容は出力されずプロセスは実行を続ける
+    /// </summary>
     protected async Task ExecWithoutErrorHandling()
     {
         const string name = "ExecWithoutErrorHandling";
@@ -75,6 +82,9 @@ public class Worker : BackgroundService
         _logger.LogInformation($"{name}: bye");
     }
 
+    /// <summary>
+    /// async void のメソッド内で例外が発生すると例外の内容が出力されアプリケーションがクラッシュする
+    /// </summary>
     protected async void AsyncVoidExec()
     {
         const string name = "AsyncVoidExec";

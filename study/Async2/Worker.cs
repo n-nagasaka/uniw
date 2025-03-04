@@ -6,7 +6,7 @@ public class Worker : BackgroundService
 
     private readonly IHostApplicationLifetime _appLifetime;
 
-    private Worker(ILogger<Worker> logger, IHostApplicationLifetime appLifetime)
+    public Worker(ILogger<Worker> logger, IHostApplicationLifetime appLifetime)
     {
         _logger = logger;
         _appLifetime = appLifetime;

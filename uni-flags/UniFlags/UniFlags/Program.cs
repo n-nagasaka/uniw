@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
 
-class Flag
+public class Flag
 {
     public string ShortName { get; set; }
 
@@ -12,7 +12,7 @@ class Flag
     public string Description { get; set; }
 }
 
-class UniFlag
+public class UniFlags
 {
     public List<Flag> Flags { get; set; }
 

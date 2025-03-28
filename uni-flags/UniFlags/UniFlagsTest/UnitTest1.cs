@@ -8,4 +8,10 @@ public class UnitTest1
         var a = 0;
         Assert.Equal(1, a);
     }
+
+    [Fact]
+    public void Test2()
+    {
+        var uf = new UniFlags();
+    }
 }

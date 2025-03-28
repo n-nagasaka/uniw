@@ -14,7 +14,7 @@ public class Flag
 
 public class UniFlags
 {
-    public List<Flag> Flags { get; set; }
+    public List<Flag> Flags { get; } = new List<Flag>();
 
     public string Usage()
     {

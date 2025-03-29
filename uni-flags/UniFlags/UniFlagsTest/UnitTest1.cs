@@ -11,9 +11,9 @@ public class UnitTest1
         uf.Flags.Add(new Flag { ShortName = "g", LongName = "flag2", Description = "flag2" });
 
         var usage = uf.Usage();
-        Assert.Contains(usage, "-f");
-        Assert.Contains(usage, "--flag1");
-        Assert.Contains(usage, "-g");
-        Assert.Contains(usage, "--flag2");
+        Assert.Contains("-f", usage);
+        Assert.Contains("--flag1", usage);
+        Assert.Contains("-g", usage);
+        Assert.Contains("--flag2", usage);
     }
 }

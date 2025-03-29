@@ -1,15 +1,32 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using Microsoft.VisualBasic.CompilerServices;
+
 Console.WriteLine("Hello, World!");
+
+var uf = new UniFlags();
+uf.Flags.Add(new Flag { ShortName = "f", LongName = "flag1", Description = "flag1" });
+uf.Flags.Add(new Flag { ShortName = "g", LongName = "flag2", Description = "flag2" });
+Console.WriteLine($"usage={uf.Usage()}");
 
 public class Flag
 {
-    public string? ShortName { get; set; }
+    public Flag()
+    {
+    }
 
-    public string? LongName { get; set; }
+    public Flag(string? shortName, string? longName, string? description)
+    {
+        ShortName = shortName;
+        LongName = longName;
+        Description = description;
+    }
 
-    public string? Name { get; }
+    public string? ShortName { get; init; }
 
-    public string? Description { get; set; }
+    public string? LongName { get; init; }
+
+    public string? Description { get; init; }
 }
 
 public class UniFlags

@@ -58,4 +58,19 @@ public class UniFlags
     {   var x = string.Join(", ", Flags.Select(i => $"[{GetUsageStr(i)}]"));
         return "Usage: uniflag " + x;
     }
+
+    public ParseResult Parse(string[] args)
+    {
+        return new ParseResult
+        {
+            Args = Array.Empty<string>(),
+            Flags = Array.Empty<bool>(),
+        };
+    }
+}
+
+public class ParseResult
+{
+    public required string[] Args { get; init; }
+    public required bool[] Flags { get; init; }
 }

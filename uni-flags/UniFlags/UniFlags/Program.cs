@@ -37,7 +37,7 @@ public class UniFlags
     {
         if (flag.LongName != null && flag.ShortName != null)
         {
-            return $"-{flag.ShortName}|--{flag.LongName}";
+            return $"-{flag.ShortName} | --{flag.LongName}";
         }
         else if (flag.LongName != null)
         {

@@ -1,3 +1,4 @@
 **/obj/
 **/bin/
 *.sln.DotSettings.user
+**/.vs/

@@ -14,8 +14,8 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
 
         var usage = uf.Usage();
 
-        Assert.Contains("[-f | --flag1]", usage);
-        Assert.Contains("[-g | --flag2]", usage);
+        Assert.Contains("[-f]", usage);
+        Assert.Contains("[-g]", usage);
     }
 
     [Fact]

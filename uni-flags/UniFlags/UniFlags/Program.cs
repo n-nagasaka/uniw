@@ -62,17 +62,13 @@ public class UniFlags
 
     public static string GetUsageStr(Flag flag)
     {
-        if (flag.LongName != null && flag.ShortName != null)
-        {
-            return $"-{flag.ShortName} | --{flag.LongName}";
-        }
-        else if (flag.LongName != null)
-        {
-            return $"--{flag.LongName}";
-        }
-        else if (flag.ShortName != null)
+        if (flag.ShortName != null)
         {
             return $"-{flag.ShortName}";
+        }
+        if (flag.LongName != null)
+        {
+            return $"--{flag.LongName}";
         }
         else
         {

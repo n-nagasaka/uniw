@@ -10,7 +10,12 @@ uf.Flags.Add(new Flag { ShortName = "g", LongName = "flag2", Description = "flag
 Console.WriteLine($"usage={uf.Usage()}");
 
 
-public interface IOption { }
+public interface IOption
+{
+    bool IsFlag { get; }
+
+    bool Match(string arg);
+}
 
 public sealed class Flag : IOption
 {
@@ -30,6 +35,21 @@ public sealed class Flag : IOption
     public string? LongName { get; init; }
 
     public string? Description { get; init; }
+
+    public bool IsFlag => true;
+    public bool Match(string arg)
+    {
+        if (ShortName != null && arg == $"-{ShortName}")
+        {
+            return true;
+        }
+        if (LongName != null && arg == $"--{LongName}")
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
 
 public sealed class Option : IOption
@@ -54,6 +74,22 @@ public sealed class Option : IOption
     public string ValueName { get; init; }
 
     public string? Description { get; init; }
+
+    public bool IsFlag => false;
+
+    public bool Match(string arg)
+    {
+        if (ShortName != null && arg == $"-{ShortName}")
+        {
+            return true;
+        }
+        if (LongName != null && arg == $"--{LongName}")
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
 
 public class UniFlags
@@ -118,10 +154,27 @@ public class UniFlags
 
     public ParseResult Parse(string[] args)
     {
+        var d = new Dictionary<int, bool>();
+
+        for (var i = 0; i < Flags.Count; i++)
+        {
+            if (Flags[i].IsFlag)
+            {
+                if (args.Any(j => Flags[i].Match(j)))
+                {
+                    d[i] = true;
+                }
+                else
+                {
+                    d[i] = false;
+                }
+            }
+        }
+
         return new ParseResult
         {
-            Args = Array.Empty<string>(),
-            Flags = Array.Empty<bool>(),
+            Args = (from i in args where !i.StartsWith("-") select i).ToArray(),
+            Flags = d
         };
     }
 }
@@ -129,5 +182,5 @@ public class UniFlags
 public class ParseResult
 {
     public required string[] Args { get; init; }
-    public required bool[] Flags { get; init; }
+    public required Dictionary<int, bool> Flags { get; init; }
 }

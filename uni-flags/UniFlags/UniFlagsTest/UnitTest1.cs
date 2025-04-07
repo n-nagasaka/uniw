@@ -50,10 +50,30 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
         uf.Flags.Add(new Flag { ShortName = "f", Description = "flag1" });
 
         var result = uf.Parse(["-f", "abc", "Def"]);
-        Assert.Equal(new [] { "abc", "Def" }, result.Args);
-        Assert.Equal(new [] { true }, result.Flags);
+
+        // TODO Assert.Multiple
+
+        Assert.Multiple(
+            () => Assert.Equal(new[] {"abc", "Def"}, result.Args),
+            () => Assert.True(result.Flags[0]));
+        ;
     }
-    
-    
+
+
+    [Fact]
+    public void Test5()
+    {
+        var uf = new UniFlags();
+        uf.Flags.Add(new Flag { ShortName = "f", LongName = "flag1" });
+        uf.Flags.Add(new Flag { ShortName = "g", LongName = "flag2" });
+
+        var result = uf.Parse(["--flag2", "x", "yz"]);
+
+        Assert.Multiple(
+            () => Assert.Equal(new [] { "x", "yz" }, result.Args),
+            () => Assert.False(result.Flags[0], "f should be false"),
+            () => Assert.True(result.Flags[1], "g should be true"));
+        ;
+    }
 }
 

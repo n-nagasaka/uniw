@@ -5,7 +5,7 @@ namespace UniFlagsTest;
 public class UnitTest1(ITestOutputHelper testOutputHelper)
 {
 
-    [Fact]
+    [Fact(DisplayName = "Usage に定義したフラグが含まれること")]
     public void Test2()
     {
         var uf = new UniFlags();
@@ -18,7 +18,7 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
         Assert.Contains("[-g]", usage);
     }
 
-    [Fact]
+    [Fact(DisplayName = "短い名前と長い名前が定義されている時 Usage には短い名前が含まれること")]
     public void Test3()
     {
         var uf = new UniFlags();
@@ -31,7 +31,7 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
         Assert.Contains("[--flag2]", usage);
     }
 
-    [Fact]
+    [Fact(DisplayName = "Usage に定義したオプションが含まれること")]
     public void ShouldUsageContainsOption_When_OptionIsDefined_1()
     {
         var uf = new UniFlags();
@@ -42,7 +42,7 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
         Assert.Contains("[-f <flag1-value>]", usage);
     }
    
-    [Fact]
+    [Fact(DisplayName = "コマンドラインがパースされること #1")]
     public void Test4()
     {
         
@@ -60,7 +60,7 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
     }
 
 
-    [Fact]
+    [Fact(DisplayName="コマンドラインがパースされること #2")]
     public void Test5()
     {
         var uf = new UniFlags();

@@ -174,7 +174,8 @@ public class UniFlags
         return new ParseResult
         {
             Args = (from i in args where !i.StartsWith("-") select i).ToArray(),
-            Flags = d
+            Flags = d,
+            Values = new Dictionary<int, string>(),
         };
     }
 }
@@ -182,5 +183,7 @@ public class UniFlags
 public class ParseResult
 {
     public required string[] Args { get; init; }
+
     public required Dictionary<int, bool> Flags { get; init; }
+    public required Dictionary<int, string> Values { get; init; }
 }

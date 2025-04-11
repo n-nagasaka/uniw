@@ -59,7 +59,6 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
         ;
     }
 
-
     [Fact(DisplayName="コマンドラインがパースされること #2")]
     public void Test5()
     {
@@ -75,5 +74,35 @@ public class UnitTest1(ITestOutputHelper testOutputHelper)
             () => Assert.True(result.Flags[1], "g should be true"));
         ;
     }
+
+    [Fact(DisplayName = "オプションがパースされること")]
+    public void ShouldParseOptions_When_OptionIsDefined()
+    {
+        var uf = new UniFlags();
+        uf.Flags.Add(new Option { ShortName = "p", LongName = "opq" });
+
+        var result = uf.Parse(["--flag2", "xy", "yza"]);
+
+        Assert.Multiple(
+            () => Assert.Equal(new [] { "xy", "yza" }, result.Args),
+            () => Assert.Equal("x", result.Values[0]));
+    }
+
+    [Fact(DisplayName = "オプションとフラグがパースされること")]
+    public void ShouldParseOptionsAndFlags_When_OptionAndFlagsAreDefined()
+    {
+        var uf = new UniFlags();
+        uf.Flags.Add(new Flag { ShortName = "b", LongName = "bcd" });
+        uf.Flags.Add(new Option { ShortName = "d", LongName = "def" });
+
+        var result = uf.Parse(["--bcd", "-d", "xx", "yzz"]);
+
+        Assert.Multiple(
+            () => Assert.Equal(new [] { "xx", "yzz" }, result.Args),
+            () => Assert.True(result.Flags[0], "b should be true"),
+            () => Assert.Equal("x", result.Values[1]));
+        ;
+    }
+
 }
 

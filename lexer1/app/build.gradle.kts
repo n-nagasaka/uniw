@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("io.freefair.lombok") version "9.1.0" // バージョンはGradleの互換性に注意
 }
 
 repositories {
@@ -23,6 +24,12 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    // Lombok: compileOnly + annotationProcessor for main and test
+    // compileOnly("org.projectlombok:lombok:1.18.28")
+    // annotationProcessor("org.projectlombok:lombok:1.18.28")
+    // testCompileOnly("org.projectlombok:lombok:1.18.28")
+    // testAnnotationProcessor("org.projectlombok:lombok:1.18.28")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

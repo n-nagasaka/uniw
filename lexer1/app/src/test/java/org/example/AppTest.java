@@ -4,11 +4,26 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
+
+import lombok.val;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
 
 class AppTest {
     @Test void appHasAGreeting() {
         App classUnderTest = new App();
         assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    }
+
+
+    @Test
+    @DisplayName("getToken は Token を返すこと")
+    void whenGetToken_thenReturnsToken() {
+        val lexer = new MyLexer();
+        var result = lexer.getToken("if (x==1)");
+        var expected = new Token(TokenType.If, "");
+        assertEquals(expected, result);
     }
 }

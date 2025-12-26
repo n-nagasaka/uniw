@@ -1,10 +1,21 @@
 package org.example;
+import lombok.val;
 
 public class MyLexer {
 
-    public Token getToken(String string) {
+    public GetTokenResult getToken(String string) {
 
-        return new Token(TokenType.If, "");
+        val token = new Token(TokenType.If, "if");
+        val result = new GetTokenResult(token, 2);
+
+        return result;
     }
     
+    public GetTokenResult getToken(String string, int start) {
+
+        val token = new Token(TokenType.OpenParen, "(");
+        val result = new GetTokenResult(token, start + 2);
+
+        return result;
+    }
 }

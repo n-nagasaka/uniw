@@ -31,6 +31,15 @@ class AppTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    @DisplayName("getToken は Token を返すこと")
+    void whenGetToken_thenReturnsToken3() {
+        val lexer = new MyLexer();
+        var result = lexer.getToken("x==1)", 0);
+        var expected = createGetTokenResult(TokenType.Symbol, "x", 0);
+        assertEquals(expected, result);
+    }
+
     private GetTokenResult createGetTokenResult(String s, int start) {
         val x = switch (s) {
             case "if" -> TokenType.If;
@@ -42,5 +51,9 @@ class AppTest {
 
     private GetTokenResult createGetTokenResult(String s) {
         return createGetTokenResult(s, 0);
+    }
+
+    private GetTokenResult createGetTokenResult(TokenType type, String value, int start) {
+        return new GetTokenResult(new Token(type, value), start + value.length());
     }
 }

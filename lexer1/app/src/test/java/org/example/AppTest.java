@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.List;
+import java.util.Optional;
+
 class AppTest {
 
     @Test
@@ -27,7 +30,7 @@ class AppTest {
     void whenGetToken_thenReturnsToken2() {
         val lexer = new MyLexer();
         var result = lexer.getToken("if (x==1)", 2);
-        var expected = createGetTokenResult("(", 3);
+        var expected = Optional.of(createGetTokenResult("(", 3));
         assertEquals(expected, result);
     }
 
@@ -36,8 +39,42 @@ class AppTest {
     void whenGetToken_thenReturnsToken3() {
         val lexer = new MyLexer();
         var result = lexer.getToken("x==1)", 0);
-        var expected = createGetTokenResult(TokenType.Symbol, "x", 0);
+        var expected = Optional.of(createGetTokenResult(TokenType.Symbol, "x", 0));
         assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("tokenize は Token のリストを返す")
+    void whenTokenize_thenReturnsTokenList() {
+        val lexer = new MyLexer();
+        val result = lexer.tokenize("if ( x == 1 )");
+        val expected = List.of(
+            token("if"),
+            token("("),
+            token("x"),
+            token("=="),
+            token("1"),
+            token(")")
+        );
+        assertEquals(expected, result);
+    }
+
+    private Token token(String s) {
+        val tokenType = switch (s) {
+            case "if" ->  TokenType.If;
+            case "(" -> TokenType.OpenParen;
+            case ")" -> TokenType.CloseParen;
+            case "==" -> TokenType.Equals;
+            default -> {
+                if (s.matches("^\\d+$")) {
+                    yield TokenType.Number;
+                } else if (s.matches("^\\w+$")) {
+                    yield TokenType.Symbol;
+                }
+                yield TokenType.Unknown;
+            }
+        };
+        return new Token(tokenType, s);
     }
 
     private GetTokenResult createGetTokenResult(String s, int start) {

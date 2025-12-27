@@ -1,6 +1,8 @@
 package org.example;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import lombok.NonNull;
 
@@ -18,13 +20,9 @@ public class MyLexer {
         return result;
     }
     
-    public GetTokenResult getToken(String string, int start) {
+    public Optional<GetTokenResult> getToken(String string, int start) {
         val next = skipWhiteSpace(string, start);
-        val result = matchTokens(string, next);
-        if (result.isPresent()) {
-            return result.get();
-        }
-        return new GetTokenResult(new Token(TokenType.Unknown, ""), next);
+        return matchTokens(string, next);
     }
 
 
@@ -52,4 +50,17 @@ public class MyLexer {
         return Optional.empty();
     }
 
+    public List<Token> tokenize(String s) {
+        Stream.Builder<Token> sb = Stream.builder();
+        var start = 0;
+        while (true) {
+            val res = getToken(s, start);
+            if (res.isEmpty()) {
+                return sb.build().toList();
+            }
+            val v = res.get();
+            sb.accept(v.token());
+            start = v.next();
+        }
+    }
 }

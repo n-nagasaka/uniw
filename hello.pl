@@ -55,5 +55,5 @@ __DATA__
 @@ index.html.ep
 % layout 'default';
 % title 'Welcome';
-<h1>Welcome to the Mojolicious real-time web framework!</h1>
+<h3>Welcome to the Mojolicious real-time web framework!!</h3>
 <p><a class="btn btn-primary" href="/calendar">カレンダーを見る</a></p>

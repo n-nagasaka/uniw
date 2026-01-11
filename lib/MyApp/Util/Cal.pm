@@ -14,7 +14,13 @@ sub topday {
         day   => 1,
     );
 
-    return $result;
+    my $dow = $result->day_of_week;
+    my $dlt = ($dow - $w + 7) % 7;
+
+    if ($dlt == 0) {
+        return $result;
+    }
+    return $result->subtract( days => $dlt );
 }
 
 1;
